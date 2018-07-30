@@ -4,16 +4,43 @@ import { View, StyleSheet, Text } from 'react-native';
 import firebase from "react-native-firebase"
 export default class MapScreen extends Component {
     
-    componentDidMount() {
-       
-    }
+  
+  componentWillMount() {
+    let db = firebase.firestore();
+    getRealTimeUpdates=()=>{
+    db.collection("users").doc("Maps").onSnapshot((doc)=>{
+  if(doc && doc.exists){
+   console.log(JSON.stringify(doc.data()))
+   
+    data=doc.data();
+    Object.keys(data).forEach((name) => {
+      this.setState({
+        latitude:parseFloat(data['latitude']),
+        longitude:parseFloat(data['longitude']),
+        region:{
+           latitude:parseFloat(data['latitude']),
+           longitude:parseFloat(data['longitude']),
+           latitudeDelta: 0.002,
+           longitudeDelta: 0.002,
+        }
+      })
+   
+    });
+ 
+}
+
+    })
+        }
+        getRealTimeUpdates();
+  }
+  
     
     state={
         region: {
             latitude:28.638774,
             longitude:77.366464,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
           },
           latitude:"",
           longitude:"",
@@ -21,33 +48,9 @@ export default class MapScreen extends Component {
     onRegionChange(region) {
         ()=> this.setState({ region });
        }
+       
     render() {
-        var db = firebase.firestore();
-        let getRealTimeUpdates=()=>{
-         db.collection("users").doc("Maps").onSnapshot((doc)=>{
-       if(doc && doc.exists){
-        // alert(JSON.stringify(doc.data()))
         
-         data=doc.data();
-         Object.keys(data).forEach((name) => {
-           this.setState({
-             latitude:parseFloat(data['latitude']),
-             longitude:parseFloat(data['longitude']),
-             region:{
-                latitude:parseFloat(data['latitude']),
-                longitude:parseFloat(data['longitude']),
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-             }
-           })
-        
-         });
-      
-     }
-     
-         })
-             }
-             getRealTimeUpdates();
         return (
            <View style={styles.container}>
              <MapView
