@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
-
+import com.airbnb.android.react.maps.MapsPackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -27,7 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNFirebasePackage(),
-            new RNFirebaseFirestorePackage() 
+            new RNFirebaseFirestorePackage(),
+            new MapsPackage() 
             );
     }
 

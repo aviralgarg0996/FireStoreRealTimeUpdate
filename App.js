@@ -9,7 +9,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import firebase from "react-native-firebase"
-
+import MapScreen from "./app/MapScreen"
 export default class App extends Component {
  
   state={
@@ -21,18 +21,26 @@ export default class App extends Component {
   render() {
     var db = firebase.firestore();
    let getRealTimeUpdates=()=>{
-    db.collection("users").doc("LOkENrnEJzY0pKXhTFsd").onSnapshot((doc)=>{
+    db.collection("users").doc("Maps").onSnapshot((doc)=>{
   if(doc && doc.exists){
-  this.setState({
-    data:JSON.stringify(doc.data())
-  })
+    data=doc.data();
+    Object.keys(data).forEach((name) => {
+      // if(name=='latitude')
+      this.setState({
+        data:JSON.stringify(data['longitude'])
+      })
+      // (name, data[name]);
+    });
+ 
 }
+
     })
         }
         getRealTimeUpdates();
 
     return (
       <View style={styles.container}>
+      <MapScreen/>
       {/* <TextInput
        style={{height: 40, borderColor: 'gray', borderWidth: 1,width:100}}
       value={this.state.name}
@@ -42,7 +50,7 @@ export default class App extends Component {
         })
       }}
       /> */}
-       <Button
+       {/* <Button
        title="Click To Save Data"
        onPress={
          ()=>{
@@ -56,7 +64,7 @@ export default class App extends Component {
            alert("Error adding document: ", error);
         });
          }
-       }/>
+       }/> */}
        {/* <Button
        title="Display Data"
        onPress={
@@ -73,7 +81,7 @@ export default class App extends Component {
        }
        />
         */}
-       <Text>Data:{this.state.data}</Text>
+       {/* <Text>Data:{this.state.data}</Text> */}
       </View>
     );
   }
