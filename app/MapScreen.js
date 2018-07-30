@@ -26,11 +26,8 @@ export default class MapScreen extends Component {
       })
    
     });
- 
 }
-
-    })
-        }
+    })  }
         getRealTimeUpdates();
   }
   
